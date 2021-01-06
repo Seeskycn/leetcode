@@ -7,25 +7,40 @@ package com.scn.leetcode;
  */
 public class Question19 {
 
-    public ListNode removeNthFromEnd(ListNode head, int n) {
+    public static void main(String[] args) {
+        ListNode listNode = new ListNode(1);
+        listNode.next = null;
+        ListNode listNode1 = removeNthFromEnd(listNode, 1);
+        System.out.println(111);
+    }
+
+    public static ListNode removeNthFromEnd(ListNode head, int n) {
         if(n == 0){
             return null;
         }
         ListNode empty= new ListNode(0);
         empty.next = head;
-        ListNode p = empty;
-        ListNode q = empty;
+        ListNode fast = empty;
+        ListNode slow = empty;
 
         for (int i = 0; i < n; i++) {
-            p = p.next;
+            fast = fast.next;
         }
 
         // 移动
-        while (p!=null){
-           p=p.next;
-           q=q.next;
+        while (fast.next!=null){
+           fast=fast.next;
+           slow=slow.next;
         }
-        return null;
+
+        if(slow == empty){
+            return head.next;
+        }else{
+            slow.next = slow.next.next;
+        }
+
+
+        return head;
     }
 }
 
