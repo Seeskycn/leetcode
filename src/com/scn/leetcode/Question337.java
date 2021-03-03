@@ -25,22 +25,47 @@ package com.scn.leetcode;
  *
  * ------------------代码无BUG!--------------
  * @Author: Seesky
- * @Date: 2021/2/2 20:41
+ * @Date: 2021/3/1 21:07
  * @Description:
  */
-public class Question152 {
+public class Question337 {
 
-    public int maxProduct(int[] nums) {
-        return getResult(nums,0,nums[0]);
 
+    public int rob(TreeNode root) {
+
+        return getResult(root, 0,true);
     }
 
-    private int getResult(int[] nums, int max, int index) {
-        if(index == nums.length-1){
-            return nums[index];
+    private int getResult(TreeNode root, int sum, boolean canTake) {
+        if(root == null){
+            return sum;
         }
-        int result = getResult(nums, 0, index + 1);
+        if(root.left == null && root.right == null){
+            if(canTake){
+                return sum+root.val;
+            }else {
+                return sum;
+            }
 
-        return Math.max(result,result*nums[index]);
+        }
+        if(canTake){
+            sum = Math.max ((getResult(root.left,sum,false) +  getResult(root.right,sum,false) + root.val),
+                    getResult(root.left,sum,true) +  getResult(root.right,sum,true));
+        }else {
+            sum = getResult(root.left,sum,true) +  getResult(root.right,sum,true);
+        }
+
+
+        return sum;
+    }
+
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int x) {
+            val = x;
+        }
     }
 }

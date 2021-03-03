@@ -1,5 +1,7 @@
 package com.scn.leetcode;
 
+import java.util.List;
+
 /*
  *-----------------神兽保佑 -----------------
  *           ┌─┐        ┌─┐
@@ -25,22 +27,45 @@ package com.scn.leetcode;
  *
  * ------------------代码无BUG!--------------
  * @Author: Seesky
- * @Date: 2021/2/2 20:41
+ * @Date: 2021/2/25 22:29
  * @Description:
  */
-public class Question152 {
+public class Question206 {
+    public ListNode reverseList(ListNode head) {
+        if(head == null && head.next == null ){
+            return head;
+        }
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode next = head.next;
 
-    public int maxProduct(int[] nums) {
-        return getResult(nums,0,nums[0]);
+        while (next !=null){
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+            next = next.next;
+
+        }
+        cur.next = pre;
+        return cur;
 
     }
 
-    private int getResult(int[] nums, int max, int index) {
-        if(index == nums.length-1){
-            return nums[index];
-        }
-        int result = getResult(nums, 0, index + 1);
 
-        return Math.max(result,result*nums[index]);
+    class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
     }
 }
