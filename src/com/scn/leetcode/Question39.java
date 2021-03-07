@@ -1,6 +1,7 @@
 package com.scn.leetcode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,41 +13,32 @@ import java.util.List;
 public class Question39 {
 
     public static void main(String[] args) {
-        System.out.println(combinationSum(new int[]{2,7,6,3,5,1},9));
+        System.out.println(combinationSum(new int[]{2,3,5}, 8));
     }
 
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
-        getResult(candidates,0,target,new LinkedList<>(),res);
+        Arrays.sort(candidates);
+        getResult(candidates,0, target, new LinkedList<>(), res);
         return res;
     }
 
-    private static List<List<Integer>> getResult(int[] candidates, int begin, int target,LinkedList<Integer> path, List<List<Integer>> res) {
-        if(target == 0){
+    private static void getResult(int[] candidates,int begin,int target, LinkedList<Integer> path, List<List<Integer>> res) {
+        if (target == 0) {
             res.add(new ArrayList<>(path));
-            return res;
+            return;
         }
-        if(begin >=candidates.length){
-            return res;
+        if (target < 0) {
+            return;
         }
-        for (int i = begin; i < candidates.length - 1; i++) {
-            if(candidates[i] == target) {
-                List<Integer> sub = new ArrayList<>(path);
-                sub.add(candidates[i]);
-                res.add(sub);
-            }
-        }
-        // 不选单前
-        getResult(candidates,begin+1,target,path, res);
 
-        // 选择当前
-        if(candidates[begin]<=target){
-            path.addLast(candidates[begin]);
-            getResult(candidates,begin,target-candidates[begin],path, res);
+        for (int i = begin; i < candidates.length; i++) {
+            path.addLast(candidates[i]);
+            //  注意：由于每一个元素可以重复使用，下一轮搜索的起点依然是 i，这里非常容易弄错
+            getResult(candidates,i,target - candidates[i], path, res);
             path.removeLast();
-        }
 
-        return res;
+        }
 
     }
 
