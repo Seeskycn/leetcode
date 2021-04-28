@@ -10,55 +10,46 @@ import java.util.*;
 public class Question15 {
 
     public static void main(String[] args) {
-        int[] ints = {-1, 0, 1, 2, -1, -4};
+        int[] ints = {-1,0,1,2,-1,-4};
         System.out.println(threeSum(ints));
     }
 
     public static List<List<Integer>> threeSum(int[] nums) {
-        Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
-        Set<String> set = new HashSet<>();
-        return nSum(nums,0,0,0,3,new ArrayList(),res,set);
+        if (nums == null || nums.length < 3) {
+            return res;
+        }
+        Arrays.sort(nums);
+        getResult(nums,0,0,res,new LinkedList<>());
+        return res;
     }
 
-    private static List<List<Integer>> nSum(int[] nums,  int count, int sum, int begin, int totalCount,List path, List res, Set<String> set) {
-        if(begin >= nums.length){
-            return res;
-        }
-        if(nums.length-begin < totalCount-count){
-            return res;
-        }
-        if(count >= totalCount){
-            return res;
-        }
-        if(count == totalCount-1 && path.size() == totalCount -1){
-            for (int j = begin; j < nums.length; j++) {
-                if(nums[j] == sum){
-                    ArrayList subRes = new ArrayList<>(path);
-                    subRes.add(sum);
-                    if(!set.contains(subRes.toString())){
-                        set.add(subRes.toString());
-                        res.add(subRes);
-                    }
-                    break;
-                }
+    private static void getResult(int[] nums, int begin,int target,List<List<Integer>> res, LinkedList<Integer> path) {
 
+        if(path.size() == 3){
+            int sum = 0;
+            for (Integer integer : path) {
+                sum += integer;
             }
+            if(sum == 0){
+                res.add(new ArrayList<>(path));
+            }
+            return;
         }
         for (int i = begin; i < nums.length; i++) {
-            // 不取当前位置
-            if(nums.length -i >totalCount - count){
-                List<List<Integer>> list2 = nSum(nums, count, sum,i+1, totalCount,path, res, set);
+            if(path.size() == 0 && nums[i] > 0){
+                return;
+            }
+            if(nums[i]>0 && target < 0){
+                return;
+            }
+            path.addLast(nums[i]);
+            getResult(nums,i+1,target-nums[i],res,path);
+            path.removeLast();
+            while (i+1<nums.length && nums[i] == nums[i+1]){
+                i++;
             }
 
-            // 取当前位置的结果
-            path.add(nums[i]);
-            List<List<Integer>> list1 = nSum(nums,  count + 1, sum-nums[i],i+1, totalCount,path, res, set);
-            // 还原现场
-            path.remove(count);
-
         }
-
-        return res;
     }
 }

@@ -10,45 +10,45 @@ import java.util.Arrays;
 public class Question322 {
 
     public static void main(String[] args) {
-
-        int[] ints = {186,419,83,408};
-        System.out.println(coinChange(ints,6249));
+        System.out.println(coinChange(new int[]{411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 422}, 9864));
     }
+
     public static int coinChange(int[] coins, int amount) {
         Arrays.sort(coins);
-        return getResult(coins,amount,0,coins.length-1);
+        int result = getResult(coins, amount, coins.length - 1);
+
+        return result == Integer.MAX_VALUE ? -1 : result;
     }
 
-    private static int getResult(int[] coins, int amount, int sum,int index) {
-        if(amount == 0){
-            return sum;
-        }
-        if(index == 0){
-            if(amount % coins[index] == 0){
-                sum += amount / coins[index];
-                return sum;
-            }else {
-                return -1;
-            }
-        }
-        while (index >= 0){
-            if(coins[index]>amount){
-                index--;
-                continue;
-            }else {
-                // 拿
-                int res = getResult(coins, amount - coins[index], sum + 1, index);
-                if(res != -1){
-                    return res;
-                }
+    private static int getResult(int[] coins, int amount, int index) {
 
-                // 不拿
-                res = getResult(coins, amount, sum, index - 1);
+        if (amount == 0) {
+            return 0;
+        }
+        if (index < 0) {
+            return Integer.MAX_VALUE;
+        }
+        int count = amount / coins[index];
+        if (amount % coins[index] == 0) {
+            return count;
+        }
+        int res = Integer.MAX_VALUE;
+        while (count == 0) {
+            count = amount / coins[index--];
+            if (index < 0) {
                 return res;
-
             }
         }
 
-        return -1;
+        for (int i = count; i >= 0; i--) {
+            int result = getResult(coins, amount - i * coins[index], (index - 1));
+            if (result != Integer.MAX_VALUE) {
+                return i + result;
+            }
+        }
+
+        return res;
+
     }
+
 }

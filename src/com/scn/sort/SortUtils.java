@@ -12,4 +12,10 @@ public class SortUtils {
         ints[i] = ints[j];
         ints[j] = temp;
     }
+
+    public static void print(int[] ints){
+        for (int anInt : ints) {
+            System.out.print(anInt + " ");
+        }
+    }
 }
